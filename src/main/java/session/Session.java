@@ -16,7 +16,7 @@ public abstract class Session {
         channelHandlerContext.close();
     }
 
-    public void respond(final ProtocolObject protocolObject) {
+    public void say(final ProtocolObject protocolObject) {
         final int messageId = protocolObject.getMessageId();
         final byte[] rawObject = protocolObject.toRawObject();
 
