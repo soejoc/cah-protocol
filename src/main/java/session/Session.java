@@ -6,7 +6,7 @@ import protocol.object.meta.MetaObject;
 import util.ProtocolInputStream;
 
 public abstract class Session {
-    private final ChannelHandlerContext channelHandlerContext;
+    protected final ChannelHandlerContext channelHandlerContext;
 
     public Session(final ChannelHandlerContext channelHandlerContext) {
         this.channelHandlerContext = channelHandlerContext;
@@ -20,7 +20,7 @@ public abstract class Session {
         final int messageId = protocolObject.getMessageId();
         final byte[] rawObject = protocolObject.toRawObject();
 
-        final ProtocolInputStream stream = new ProtocolInputStream(rawObject);
+        final ProtocolInputStream stream = (rawObject != null) ? new ProtocolInputStream(rawObject) : null;
         final MetaObject metaObject = new MetaObject(messageId, stream);
 
         channelHandlerContext.writeAndFlush(metaObject);

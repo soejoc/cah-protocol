@@ -5,28 +5,32 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
 import protocol.Version;
 import protocol.object.meta.MetaObject;
+import protocol.error.exception.InvalidProtocolVersionException;
 import util.ProtocolInputStream;
 
 import java.util.List;
 
 public class MetaDecoder extends ReplayingDecoder<MetaObject> {
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) {
+    protected void decode(final ChannelHandlerContext ctx, final ByteBuf in, final List<Object> out) {
         final int version = in.readInt();
 
         if(version != Version.PROTOCOL_VERSION) {
-            //ToDo: Signal incompatible version
+            throw new InvalidProtocolVersionException(version, Version.PROTOCOL_VERSION);
         }
 
         final int messageId = in.readInt();
         final int messageLength = in.readInt();
-        final byte[] message = new byte[messageLength];
+        ProtocolInputStream stream = null;
 
-        in.readBytes(message, 0, messageLength);
+        if(messageLength > 0) {
+            final byte[] message = new byte[messageLength];
+            in.readBytes(message, 0, messageLength);
 
-        final ProtocolInputStream stream = new ProtocolInputStream(message);
+            stream = new ProtocolInputStream(message);
+        }
 
-        MetaObject metaObject = new MetaObject(messageId, stream);
+        final MetaObject metaObject = new MetaObject(messageId, stream);
         out.add(metaObject);
     }
 }

@@ -2,6 +2,7 @@ package protocol.object;
 
 import codec.decoder.DecoderBase;
 import codec.encoder.EncoderBase;
+import protocol.error.exception.InvalidMessageException;
 import throwable.exception.InvalidInputStreamException;
 import util.ProtocolInputStream;
 
@@ -11,18 +12,18 @@ public abstract class ProtocolObject {
     protected abstract DecoderBase<? extends ProtocolObject> getDecoder(final ProtocolInputStream protocolObjectStream);
     protected abstract EncoderBase<? extends ProtocolObject> getEncoder();
 
-    public void fromStream(final ProtocolInputStream protocolObjectStream) throws InvalidInputStreamException {
+    public void fromStream(final ProtocolInputStream protocolObjectStream) {
         try {
-            DecoderBase<? extends ProtocolObject> decoder = getDecoder(protocolObjectStream);
+            final DecoderBase<? extends ProtocolObject> decoder = getDecoder(protocolObjectStream);
             decoder.decode();
-        } catch (IOException e) {
-            throw new InvalidInputStreamException("The provided input stream is not valid");
+        } catch (final IOException e) {
+            throw new InvalidMessageException();
         }
     }
 
     public byte[] toRawObject() {
-        EncoderBase<? extends ProtocolObject> encoder = getEncoder();
-        return encoder.encode();
+        final EncoderBase<? extends ProtocolObject> encoder = getEncoder();
+        return (encoder != null) ? encoder.encode() : null;
     }
 
     public abstract int getMessageId();

@@ -20,7 +20,7 @@ public abstract class EncoderBase<T extends ProtocolObject> {
             rawDataStream.flush();
 
             return rawDataStream.toByteArray();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new EncodingError("Could not encode the protocol object");
         }
     }

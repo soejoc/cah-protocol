@@ -4,7 +4,7 @@ import codec.decoder.DecoderBase;
 import codec.decoder.StartGameRequestDecoder;
 import codec.encoder.EncoderBase;
 import codec.encoder.StartGameRequestEncoder;
-import protocol.Message;
+import protocol.MessageCode;
 import protocol.object.ProtocolObject;
 import util.ProtocolInputStream;
 
@@ -12,7 +12,7 @@ public class StartGameRequest extends ProtocolObject {
     public String nickName;
 
     @Override
-    protected DecoderBase<? extends ProtocolObject> getDecoder(ProtocolInputStream protocolObjectStream) {
+    protected DecoderBase<? extends ProtocolObject> getDecoder(final ProtocolInputStream protocolObjectStream) {
         return new StartGameRequestDecoder(protocolObjectStream, this);
     }
 
@@ -23,6 +23,6 @@ public class StartGameRequest extends ProtocolObject {
 
     @Override
     public int getMessageId() {
-        return Message.START_GAME_RQ;
+        return MessageCode.START_GAME_RQ;
     }
 }

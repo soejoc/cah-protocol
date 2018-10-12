@@ -9,15 +9,22 @@ import util.ProtocolInputStream;
 
 public class MetaEncoder extends MessageToByteEncoder<MetaObject> {
     @Override
-    protected void encode(ChannelHandlerContext ctx, MetaObject msg, ByteBuf out) {
-        final int messageId = msg.getMessageId();
-        final ProtocolInputStream stream = msg.getStream();
-        final byte[] rawMessage = stream.getBuffer();
-        final int messageLength = rawMessage.length;
-
+    protected void encode(final ChannelHandlerContext ctx, final MetaObject msg, final ByteBuf out) {
         out.writeInt(Version.PROTOCOL_VERSION);
+
+        final int messageId = msg.getMessageId();
         out.writeInt(messageId);
-        out.writeInt(messageLength);
-        out.writeBytes(rawMessage, 0, messageLength);
+
+        final ProtocolInputStream stream = msg.getStream();
+
+        if(stream != null) {
+            final byte[] rawMessage = stream.getBuffer();
+            final int messageLength = rawMessage.length;
+
+            out.writeInt(messageLength);
+            out.writeBytes(rawMessage, 0, messageLength);
+        } else {
+            out.writeInt(0);
+        }
     }
 }

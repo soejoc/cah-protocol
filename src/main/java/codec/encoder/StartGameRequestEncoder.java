@@ -6,7 +6,7 @@ import util.ProtocolOutputStream;
 import java.io.IOException;
 
 public class StartGameRequestEncoder extends EncoderBase<StartGameRequest> {
-    public StartGameRequestEncoder(StartGameRequest protocolObject) {
+    public StartGameRequestEncoder(final StartGameRequest protocolObject) {
         super(protocolObject);
     }
 
