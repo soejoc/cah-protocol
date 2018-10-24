@@ -3,6 +3,7 @@ package codec.decoder.meta;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
+import protocol.MessageCode;
 import protocol.Version;
 import protocol.object.meta.MetaObject;
 import protocol.error.exception.InvalidProtocolVersionException;
@@ -14,12 +15,12 @@ public class MetaDecoder extends ReplayingDecoder<MetaObject> {
     @Override
     protected void decode(final ChannelHandlerContext ctx, final ByteBuf in, final List<Object> out) {
         final int version = in.readInt();
+        final int messageId = in.readInt();
 
-        if(version != Version.PROTOCOL_VERSION) {
+        if(version != Version.PROTOCOL_VERSION && messageId != MessageCode.ERROR) {
             throw new InvalidProtocolVersionException(version, Version.PROTOCOL_VERSION);
         }
 
-        final int messageId = in.readInt();
         final int messageLength = in.readInt();
         ProtocolInputStream stream = null;
 

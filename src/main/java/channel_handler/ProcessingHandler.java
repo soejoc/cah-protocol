@@ -12,7 +12,7 @@ import util.ProtocolInputStream;
 public abstract class ProcessingHandler extends ChannelInboundHandlerAdapter {
 
     @Override
-    public void channelRead(final ChannelHandlerContext ctx, final Object msg) {
+    public final void channelRead(final ChannelHandlerContext ctx, final Object msg) {
         final MetaObject metaObject = (MetaObject) msg;
 
         final int messageId = metaObject.getMessageId();
@@ -23,14 +23,14 @@ public abstract class ProcessingHandler extends ChannelInboundHandlerAdapter {
             ErrorObject errorObject = new ErrorObject();
             errorObject.fromStream(rawMessage);
 
-            onErrorReceived(errorObject);
+            onErrorReceived(errorObject, session);
         } else {
             handleMessage(messageId, rawMessage, session);
         }
     }
 
     @Override
-    public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
+    public final void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) throws Exception {
         final Session session = getSession(ctx);
 
         if(cause instanceof ErrorBase) {
@@ -39,14 +39,15 @@ public abstract class ProcessingHandler extends ChannelInboundHandlerAdapter {
             errorObject.message = cause.getMessage();
 
             session.say(errorObject);
+            session.close();
+        } else {
+            super.exceptionCaught(ctx, cause);
         }
-
-        session.close();
     }
 
     protected abstract Session getSession(final ChannelHandlerContext ctx);
 
     protected abstract void handleMessage(final int messageId, final ProtocolInputStream rawMessage, final Session session);
 
-    protected abstract void onErrorReceived(final ErrorObject errorObject);
+    protected abstract void onErrorReceived(final ErrorObject errorObject, final Session session);
 }
