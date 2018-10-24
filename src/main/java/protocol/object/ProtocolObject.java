@@ -3,7 +3,6 @@ package protocol.object;
 import codec.decoder.DecoderBase;
 import codec.encoder.EncoderBase;
 import protocol.error.exception.InvalidMessageException;
-import throwable.exception.InvalidInputStreamException;
 import util.ProtocolInputStream;
 
 import java.io.IOException;
