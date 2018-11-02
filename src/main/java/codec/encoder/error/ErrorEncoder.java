@@ -1,8 +1,7 @@
 package codec.encoder.error;
 
 import codec.encoder.EncoderBase;
-import protocol.object.error.ErrorObject;
-import protocol.object.request.StartGameRequest;
+import protocol.object.message.error.ErrorObject;
 import util.ProtocolOutputStream;
 
 import java.io.IOException;

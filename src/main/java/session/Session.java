@@ -1,7 +1,7 @@
 package session;
 
 import io.netty.channel.ChannelHandlerContext;
-import protocol.object.ProtocolObject;
+import protocol.object.message.ProtocolMessage;
 import protocol.object.meta.MetaObject;
 import util.ProtocolInputStream;
 
@@ -16,9 +16,9 @@ public abstract class Session {
         channelHandlerContext.close();
     }
 
-    public void say(final ProtocolObject protocolObject) {
-        final int messageId = protocolObject.getMessageId();
-        final byte[] rawObject = protocolObject.toRawObject();
+    public void say(final ProtocolMessage message) {
+        final int messageId = message.getMessageId();
+        final byte[] rawObject = message.toRawObject();
 
         final ProtocolInputStream stream = (rawObject != null) ? new ProtocolInputStream(rawObject) : null;
         final MetaObject metaObject = new MetaObject(messageId, stream);

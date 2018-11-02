@@ -2,9 +2,9 @@ package channel_handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import protocol.MessageCode;
+import protocol.object.message.MessageCode;
 import protocol.error.exception.ErrorBase;
-import protocol.object.error.ErrorObject;
+import protocol.object.message.error.ErrorObject;
 import protocol.object.meta.MetaObject;
 import session.Session;
 import util.ProtocolInputStream;

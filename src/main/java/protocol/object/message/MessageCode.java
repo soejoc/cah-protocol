@@ -1,4 +1,4 @@
-package protocol;
+package protocol.object.message;
 
 public final class MessageCode {
     private MessageCode() { }

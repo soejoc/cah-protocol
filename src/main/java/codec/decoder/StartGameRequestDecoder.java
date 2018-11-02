@@ -1,6 +1,7 @@
 package codec.decoder;
 
-import protocol.object.request.StartGameRequest;
+import protocol.object.message.request.StartGameRequest;
+import protocol.object.model.PlayerModel;
 import util.ProtocolInputStream;
 
 import java.io.IOException;

@@ -24,6 +24,4 @@ public abstract class ProtocolObject {
         final EncoderBase<? extends ProtocolObject> encoder = getEncoder();
         return (encoder != null) ? encoder.encode() : null;
     }
-
-    public abstract int getMessageId();
 }

@@ -1,6 +1,7 @@
 package codec.encoder;
 
-import protocol.object.response.StartGameResponse;
+import protocol.object.model.PlayerModel;
+import protocol.object.message.response.StartGameResponse;
 import util.ProtocolOutputStream;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ public class StartGameResponseEncoder extends EncoderBase<StartGameResponse> {
     @Override
     protected void serialize(final ProtocolOutputStream stream) throws IOException {
         stream
-                .write(protocolObject.nickName);
+                .write(protocolObject.me)
+                .write(PlayerModel.class, protocolObject.antagonists);
     }
 }

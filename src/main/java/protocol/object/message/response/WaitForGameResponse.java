@@ -1,28 +1,26 @@
-package protocol.object.request;
+package protocol.object.message.response;
 
 import codec.decoder.DecoderBase;
-import codec.decoder.StartGameRequestDecoder;
 import codec.encoder.EncoderBase;
-import codec.encoder.StartGameRequestEncoder;
-import protocol.MessageCode;
+import protocol.object.message.ProtocolMessage;
+import protocol.object.message.MessageCode;
 import protocol.object.ProtocolObject;
 import util.ProtocolInputStream;
 
-public class StartGameRequest extends ProtocolObject {
-    public String nickName;
+public class WaitForGameResponse extends ProtocolMessage {
 
     @Override
     protected DecoderBase<? extends ProtocolObject> getDecoder(final ProtocolInputStream protocolObjectStream) {
-        return new StartGameRequestDecoder(protocolObjectStream, this);
+        return null;
     }
 
     @Override
     protected EncoderBase<? extends ProtocolObject> getEncoder() {
-        return new StartGameRequestEncoder(this);
+        return null;
     }
 
     @Override
     public int getMessageId() {
-        return MessageCode.START_GAME_RQ;
+        return MessageCode.WAIT_FOR_GAME_RS;
     }
 }

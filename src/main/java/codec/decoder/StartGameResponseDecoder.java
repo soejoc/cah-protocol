@@ -1,6 +1,7 @@
 package codec.decoder;
 
-import protocol.object.response.StartGameResponse;
+import protocol.object.model.PlayerModel;
+import protocol.object.message.response.StartGameResponse;
 import util.ProtocolInputStream;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ public class StartGameResponseDecoder extends DecoderBase<StartGameResponse> {
 
     @Override
     public void decode() throws IOException {
-        protocolObject.nickName = rawMessage.readString();
+        protocolObject.me = rawMessage.readProtocolObject(PlayerModel.class);
+        protocolObject.antagonists = rawMessage.readList(PlayerModel.class);
     }
 }

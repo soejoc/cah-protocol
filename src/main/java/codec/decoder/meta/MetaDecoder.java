@@ -3,7 +3,7 @@ package codec.decoder.meta;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
-import protocol.MessageCode;
+import protocol.object.message.MessageCode;
 import protocol.Version;
 import protocol.object.meta.MetaObject;
 import protocol.error.exception.InvalidProtocolVersionException;
