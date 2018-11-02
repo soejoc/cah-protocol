@@ -11,10 +11,12 @@ import protocol.object.ProtocolObject;
 import util.ProtocolInputStream;
 
 import java.util.List;
+import java.util.UUID;
 
 public class StartGameResponse extends ProtocolMessage {
     public PlayerModel me;
     public List<PlayerModel> antagonists;
+    public UUID sessionId;
 
     @Override
     protected DecoderBase<? extends ProtocolObject> getDecoder(final ProtocolInputStream protocolObjectStream) {
