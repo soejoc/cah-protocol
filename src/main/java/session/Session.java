@@ -25,4 +25,8 @@ public abstract class Session {
 
         channelHandlerContext.writeAndFlush(metaObject);
     }
+
+    public void onClose() {
+
+    }
 }
