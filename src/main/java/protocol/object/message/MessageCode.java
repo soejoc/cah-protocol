@@ -10,4 +10,6 @@ public final class MessageCode {
     public static final int START_GAME_RQ = 0x00000001;
     public static final int START_GAME_RS = 0x00000002;
     public static final int WAIT_FOR_GAME_RS = 0x00000003;
+    public static final int RESTART_GAME_RQ = 0x00000004;
+    public static final int FINISHED_GAME_RS = 0x00000005;
 }

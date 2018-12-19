@@ -3,10 +3,11 @@ package session;
 import io.netty.channel.ChannelHandlerContext;
 import protocol.object.message.ProtocolMessage;
 import protocol.object.meta.MetaObject;
+import throwable.exception.InactiveChannelContextException;
 import util.ProtocolInputStream;
 
 public abstract class Session {
-    protected final ChannelHandlerContext channelHandlerContext;
+    protected ChannelHandlerContext channelHandlerContext;
 
     public Session(final ChannelHandlerContext channelHandlerContext) {
         this.channelHandlerContext = channelHandlerContext;
@@ -17,6 +18,10 @@ public abstract class Session {
     }
 
     public void say(final ProtocolMessage message) {
+        if(!isActive()) {
+            throw new InactiveChannelContextException();
+        }
+
         final int messageId = message.getMessageId();
         final byte[] rawObject = message.toRawObject();
 
@@ -27,6 +32,10 @@ public abstract class Session {
     }
 
     public void onClose() {
+        channelHandlerContext = null;
+    }
 
+    public boolean isActive() {
+        return channelHandlerContext != null;
     }
 }

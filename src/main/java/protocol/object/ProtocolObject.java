@@ -14,7 +14,10 @@ public abstract class ProtocolObject {
     public void fromStream(final ProtocolInputStream protocolObjectStream) {
         try {
             final DecoderBase<? extends ProtocolObject> decoder = getDecoder(protocolObjectStream);
-            decoder.decode();
+
+            if(decoder != null) {
+                decoder.decode();
+            }
         } catch (final IOException e) {
             throw new InvalidMessageException();
         }

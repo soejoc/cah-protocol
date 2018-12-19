@@ -46,11 +46,15 @@ public abstract class ProcessingHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void handlerRemoved(final ChannelHandlerContext ctx) throws Exception {
+    public final void handlerRemoved(final ChannelHandlerContext ctx) throws Exception {
         final Session session = getSession(ctx);
-        session.onClose();
+        closeSession(session);
 
         super.handlerRemoved(ctx);
+    }
+
+    protected void closeSession(final Session session) {
+        session.onClose();
     }
 
     protected abstract Session getSession(final ChannelHandlerContext ctx);
