@@ -2,10 +2,10 @@ plugins {
     id 'java-library'
 }
 
-group 'lebk'
-version '1.0-SNAPSHOT'
+group 'io.jochimsen'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
