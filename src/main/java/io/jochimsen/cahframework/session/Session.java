@@ -13,6 +13,14 @@ public abstract class Session {
         this.channelHandlerContext = channelHandlerContext;
     }
 
+    public ChannelHandlerContext getChannelHandlerContext() {
+        return channelHandlerContext;
+    }
+
+    public void setChannelHandlerContext(final ChannelHandlerContext channelHandlerContext) {
+        this.channelHandlerContext = channelHandlerContext;
+    }
+
     public void close() {
         channelHandlerContext.close();
     }
