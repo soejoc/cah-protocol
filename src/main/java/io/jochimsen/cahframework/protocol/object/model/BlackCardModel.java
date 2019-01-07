@@ -7,7 +7,7 @@ import io.jochimsen.cahframework.codec.encoder.EncoderBase;
 import io.jochimsen.cahframework.protocol.object.ProtocolObject;
 import io.jochimsen.cahframework.util.ProtocolInputStream;
 
-public class BlackCard extends ProtocolObject {
+public class BlackCardModel extends ProtocolObject {
     public long blackCardId;
 
     @Override

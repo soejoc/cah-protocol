@@ -1,12 +1,12 @@
 package io.jochimsen.cahframework.codec.encoder;
 
-import io.jochimsen.cahframework.protocol.object.model.BlackCard;
+import io.jochimsen.cahframework.protocol.object.model.BlackCardModel;
 import io.jochimsen.cahframework.util.ProtocolOutputStream;
 
 import java.io.IOException;
 
-public class BlackCardEncoder extends EncoderBase<BlackCard> {
-    public BlackCardEncoder(final BlackCard protocolObject) {
+public class BlackCardEncoder extends EncoderBase<BlackCardModel> {
+    public BlackCardEncoder(final BlackCardModel protocolObject) {
         super(protocolObject);
     }
 

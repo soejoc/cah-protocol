@@ -7,8 +7,8 @@ import io.jochimsen.cahframework.codec.encoder.WhiteCardEncoder;
 import io.jochimsen.cahframework.protocol.object.ProtocolObject;
 import io.jochimsen.cahframework.util.ProtocolInputStream;
 
-public class WhiteCard extends ProtocolObject {
-    public long whiteCardsId;
+public class WhiteCardModel extends ProtocolObject {
+    public long whiteCardId;
 
     @Override
     protected DecoderBase<? extends ProtocolObject> getDecoder(final ProtocolInputStream protocolObjectStream) {
