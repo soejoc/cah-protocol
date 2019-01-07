@@ -15,7 +15,7 @@ public class StartGameResponseEncoder extends EncoderBase<StartGameResponse> {
     protected void serialize(final ProtocolOutputStream stream) throws IOException {
         stream
                 .write(protocolObject.me)
-                .write(PlayerModel.class, protocolObject.antagonists)
+                .write(PlayerModel.class, protocolObject.player)
                 .write(protocolObject.sessionId);
     }
 }

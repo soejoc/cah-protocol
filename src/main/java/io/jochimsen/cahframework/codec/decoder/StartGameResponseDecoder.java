@@ -14,7 +14,7 @@ public class StartGameResponseDecoder extends DecoderBase<StartGameResponse> {
     @Override
     public void decode() throws IOException {
         protocolObject.me = rawMessage.readProtocolObject(PlayerModel.class);
-        protocolObject.antagonists = rawMessage.readList(PlayerModel.class);
+        protocolObject.player = rawMessage.readList(PlayerModel.class);
         protocolObject.sessionId = rawMessage.readUUID();
     }
 }

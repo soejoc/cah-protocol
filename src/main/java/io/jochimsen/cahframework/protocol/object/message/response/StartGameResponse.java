@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class StartGameResponse extends ProtocolMessage {
     public PlayerModel me;
-    public List<PlayerModel> antagonists;
+    public List<PlayerModel> player;
     public UUID sessionId;
 
     @Override
