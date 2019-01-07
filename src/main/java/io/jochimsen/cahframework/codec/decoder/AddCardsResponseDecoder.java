@@ -7,8 +7,8 @@ import io.jochimsen.cahframework.util.ProtocolInputStream;
 
 import java.io.IOException;
 
-public class AddCardsDecoder extends DecoderBase<AddCardsResponse> {
-    public AddCardsDecoder(final ProtocolInputStream rawMessage, final AddCardsResponse protocolObject) {
+public class AddCardsResponseDecoder extends DecoderBase<AddCardsResponse> {
+    public AddCardsResponseDecoder(final ProtocolInputStream rawMessage, final AddCardsResponse protocolObject) {
         super(rawMessage, protocolObject);
     }
 
