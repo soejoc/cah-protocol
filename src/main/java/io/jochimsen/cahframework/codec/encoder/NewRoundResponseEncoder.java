@@ -1,13 +1,13 @@
 package io.jochimsen.cahframework.codec.encoder;
 
-import io.jochimsen.cahframework.protocol.object.message.response.AddCardsResponse;
+import io.jochimsen.cahframework.protocol.object.message.response.NewRoundResponse;
 import io.jochimsen.cahframework.protocol.object.model.WhiteCardModel;
 import io.jochimsen.cahframework.util.ProtocolOutputStream;
 
 import java.io.IOException;
 
-public class AddCardsEncoder extends EncoderBase<AddCardsResponse> {
-    public AddCardsEncoder(final AddCardsResponse protocolObject) {
+public class NewRoundResponseEncoder extends EncoderBase<NewRoundResponse> {
+    public NewRoundResponseEncoder(final NewRoundResponse protocolObject) {
         super(protocolObject);
     }
 
