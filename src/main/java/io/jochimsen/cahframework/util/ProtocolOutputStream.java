@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.UUID;
 
-public class ProtocolOutputStream {
+public class ProtocolOutputStream implements ProtocolStream {
     // Only used as a wrapper to write to the actual output stream
     private final DataOutputStream dataOutputStream;
     private final ByteArrayOutputStream buffer;
@@ -83,8 +83,8 @@ public class ProtocolOutputStream {
     }
 
     public ProtocolOutputStream write(final ProtocolObject val) throws IOException {
-        final byte[] rawObject = val.toRawObject();
-        return write(rawObject, 0, rawObject.length);
+        val.serialize(this);
+        return this;
     }
 
     public ProtocolOutputStream write(final ProtocolOutputStream rhs) throws IOException {
@@ -200,7 +200,8 @@ public class ProtocolOutputStream {
         buffer.flush();
     }
 
-    public byte[] toByteArray() {
+    @Override
+    public byte[] getBuffer() {
         return buffer.toByteArray();
     }
 }

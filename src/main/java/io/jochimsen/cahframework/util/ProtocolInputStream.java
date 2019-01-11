@@ -1,23 +1,26 @@
 package io.jochimsen.cahframework.util;
 
-import io.jochimsen.cahframework.protocol.object.ProtocolObject;
-import io.jochimsen.cahframework.throwable.exception.BufferTooShortException;
+import io.jochimsen.cahframework.exception.BufferTooShortException;
+import io.jochimsen.cahframework.exception.ProtocolObjectInstantiationException;
 import io.jochimsen.cahframework.protocol.Charset;
+import io.jochimsen.cahframework.protocol.object.ProtocolObject;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ProtocolInputStream {
+public class ProtocolInputStream implements ProtocolStream {
     // Only used as a wrapper to write to the actual output stream
     private final DataInputStream dataInputStream;
-    private final ByteArrayInputStream byteStream;
     private final byte[] buffer;
 
     public ProtocolInputStream(final byte[] buf) {
         buffer = buf;
-        byteStream = new ByteArrayInputStream(buf);
+        final ByteArrayInputStream byteStream = new ByteArrayInputStream(buf);
         dataInputStream = new DataInputStream(byteStream);
     }
 
@@ -77,19 +80,23 @@ public class ProtocolInputStream {
     }
 
     /**
-     * Reads {@link ProtocolObject}s from the stream.
-     * The provided class must be concrete and must have a nullary constructor.
+     * Reads a {@link ProtocolObject} from the stream.
+     * The provided class must be concrete and have a default constructor.
      */
     public <T extends ProtocolObject> T readProtocolObject(final Class<T> clazz) {
         try {
-            final T protocolObject = clazz.newInstance();
-            protocolObject.fromStream(this);
+            final T protocolObject = clazz.getDeclaredConstructor().newInstance();
+            protocolObject.deserialize(this);
 
             return protocolObject;
-        } catch (InstantiationException e) {
-            throw new IllegalArgumentException("The specified class is an abstract class or interface");
-        } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException("The specified class does not have a nullary constructor");
+        } catch (final InstantiationException e) {
+            throw new ProtocolObjectInstantiationException("Cannot instantiate an abstract class", e);
+        } catch (final IllegalAccessException e) {
+            throw new ProtocolObjectInstantiationException("Constructor is inaccessible", e);
+        } catch (final NoSuchMethodException e) {
+            throw new ProtocolObjectInstantiationException("Constructor could not be found", e);
+        } catch (final InvocationTargetException e) {
+            throw new ProtocolObjectInstantiationException("Constructor has thrown an exception", e);
         }
     }
 
@@ -119,7 +126,7 @@ public class ProtocolInputStream {
     @SuppressWarnings("unchecked")
     public <T> List<T> readList(final Class<T> elementType) throws IOException {
         final int size = readInt();
-        List<T> list;
+        final List<T> list;
 
         if(Boolean.TYPE == elementType) {
             final List<Boolean> booleanList = new ArrayList<>();
@@ -204,7 +211,7 @@ public class ProtocolInputStream {
         } else if(ProtocolObject.class.isAssignableFrom(elementType)) {
             final List<ProtocolObject> protocolObjectList = new ArrayList<>();
 
-            Class<? extends ProtocolObject> protocolObjectClass = (Class<? extends ProtocolObject>)elementType;
+            final Class<? extends ProtocolObject> protocolObjectClass = (Class<? extends ProtocolObject>)elementType;
 
             for(int i = 0; i < size; ++i) {
                 protocolObjectList.add(readProtocolObject(protocolObjectClass));
@@ -218,6 +225,7 @@ public class ProtocolInputStream {
         return list;
     }
 
+    @Override
     public byte[] getBuffer() {
         return buffer;
     }

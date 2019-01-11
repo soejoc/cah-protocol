@@ -1,10 +1,13 @@
 package io.jochimsen.cahframework.session;
 
-import io.netty.channel.ChannelHandlerContext;
+import io.jochimsen.cahframework.exception.FlushException;
+import io.jochimsen.cahframework.exception.InactiveChannelContextException;
+import io.jochimsen.cahframework.handler.SerializedProtocolMessage;
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
-import io.jochimsen.cahframework.protocol.object.meta.MetaObject;
-import io.jochimsen.cahframework.throwable.exception.InactiveChannelContextException;
-import io.jochimsen.cahframework.util.ProtocolInputStream;
+import io.jochimsen.cahframework.util.ProtocolOutputStream;
+import io.netty.channel.ChannelHandlerContext;
+
+import java.io.IOException;
 
 public abstract class Session {
     protected ChannelHandlerContext channelHandlerContext;
@@ -25,18 +28,27 @@ public abstract class Session {
         channelHandlerContext.close();
     }
 
-    public void say(final ProtocolMessage message) {
+    public void say(final ProtocolMessage protocolMessage) {
         if(!isActive()) {
             throw new InactiveChannelContextException();
         }
 
-        final int messageId = message.getMessageId();
-        final byte[] rawObject = message.toRawObject();
+        final int messageId = protocolMessage.getMessageId();
+        ProtocolOutputStream protocolOutputStream = null;
 
-        final ProtocolInputStream stream = (rawObject != null) ? new ProtocolInputStream(rawObject) : null;
-        final MetaObject metaObject = new MetaObject(messageId, stream);
+        if(protocolMessage.hasCodec()) {
+            protocolOutputStream = new ProtocolOutputStream();
+            protocolMessage.serialize(protocolOutputStream);
 
-        channelHandlerContext.writeAndFlush(metaObject);
+            try {
+                protocolOutputStream.flush();
+            } catch (final IOException e) {
+                throw new FlushException("Could not flush protocol output stream", e);
+            }
+        }
+
+        final SerializedProtocolMessage serializedProtocolMessage = new SerializedProtocolMessage(messageId, protocolOutputStream);
+        channelHandlerContext.writeAndFlush(serializedProtocolMessage);
     }
 
     public void onClose() {
