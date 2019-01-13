@@ -79,25 +79,8 @@ public class ProtocolInputStream implements ProtocolStream {
         return new UUID(mostSignificantBits, leastSignificantBits);
     }
 
-    /**
-     * Reads a {@link ProtocolObject} from the stream.
-     * The provided class must be concrete and have a default constructor.
-     */
     public <T extends ProtocolObject> T readProtocolObject(final Class<T> clazz) {
-        try {
-            final T protocolObject = clazz.getDeclaredConstructor().newInstance();
-            protocolObject.deserialize(this);
-
-            return protocolObject;
-        } catch (final InstantiationException e) {
-            throw new ProtocolObjectInstantiationException("Cannot instantiate an abstract class", e);
-        } catch (final IllegalAccessException e) {
-            throw new ProtocolObjectInstantiationException("Constructor is inaccessible", e);
-        } catch (final NoSuchMethodException e) {
-            throw new ProtocolObjectInstantiationException("Constructor could not be found", e);
-        } catch (final InvocationTargetException e) {
-            throw new ProtocolObjectInstantiationException("Constructor has thrown an exception", e);
-        }
+        return ProtocolObject.fromProtocolInputStream(clazz, this);
     }
 
     /**
