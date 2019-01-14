@@ -1,17 +1,19 @@
 package io.jochimsen.cahframework.handler.inbound;
 
-import io.jochimsen.cahframework.handler.SerializedProtocolMessage;
 import io.jochimsen.cahframework.protocol.Version;
+import io.jochimsen.cahframework.exception.session.ProtocolMessageDeserializationException;
 import io.jochimsen.cahframework.protocol.error.error_message.InvalidProtocolVersionException;
 import io.jochimsen.cahframework.protocol.object.message.MessageCode;
 import io.jochimsen.cahframework.util.ProtocolInputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
+import javafx.util.Pair;
 
+import java.io.IOException;
 import java.util.List;
 
-public class SerializedProtocolMessageDecoder extends ReplayingDecoder<SerializedProtocolMessage> {
+public class SerializedProtocolMessageDecoder extends ReplayingDecoder<Pair<Integer, ProtocolInputStream>> {
     @Override
     protected void decode(final ChannelHandlerContext ctx, final ByteBuf in, final List<Object> out) {
         final int version = in.readInt();
@@ -22,16 +24,14 @@ public class SerializedProtocolMessageDecoder extends ReplayingDecoder<Serialize
         }
 
         final int messageLength = in.readInt();
-        ProtocolInputStream protocolInputStream = null;
+        final byte[] message = new byte[messageLength];
+        in.readBytes(message, 0, messageLength);
 
-        if(messageLength > 0) {
-            final byte[] message = new byte[messageLength];
-            in.readBytes(message, 0, messageLength);
-
-            protocolInputStream = new ProtocolInputStream(message);
+        try {
+            final ProtocolInputStream protocolInputStream = new ProtocolInputStream(message);
+            out.add(new Pair<>(messageId, protocolInputStream));
+        } catch (final IOException e) {
+            throw new ProtocolMessageDeserializationException(e);
         }
-
-        final SerializedProtocolMessage serializedProtocolMessage = new SerializedProtocolMessage(messageId, protocolInputStream);
-        out.add(serializedProtocolMessage);
     }
 }

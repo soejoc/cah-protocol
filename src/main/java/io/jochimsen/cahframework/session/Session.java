@@ -1,11 +1,11 @@
 package io.jochimsen.cahframework.session;
 
-import io.jochimsen.cahframework.exception.FlushException;
-import io.jochimsen.cahframework.exception.InactiveChannelContextException;
-import io.jochimsen.cahframework.handler.SerializedProtocolMessage;
+import io.jochimsen.cahframework.exception.internal.ProtocolMessageSerializationException;
+import io.jochimsen.cahframework.exception.session.InactiveChannelContextException;
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
 import io.jochimsen.cahframework.util.ProtocolOutputStream;
 import io.netty.channel.ChannelHandlerContext;
+import javafx.util.Pair;
 
 import java.io.IOException;
 
@@ -33,22 +33,16 @@ public abstract class Session {
             throw new InactiveChannelContextException();
         }
 
-        final int messageId = protocolMessage.getMessageId();
-        ProtocolOutputStream protocolOutputStream = null;
+        try {
+            final int messageId = protocolMessage.getMessageId();
+            final ProtocolOutputStream protocolOutputStream = new ProtocolOutputStream();
+            protocolOutputStream.write(protocolMessage);
+            protocolOutputStream.flush();
 
-        if(protocolMessage.hasCodec()) {
-            protocolOutputStream = new ProtocolOutputStream();
-            protocolMessage.serialize(protocolOutputStream);
-
-            try {
-                protocolOutputStream.flush();
-            } catch (final IOException e) {
-                throw new FlushException("Could not flush protocol output stream", e);
-            }
+            channelHandlerContext.writeAndFlush(new Pair<>(messageId, protocolOutputStream));
+        } catch (final IOException e) {
+            throw new ProtocolMessageSerializationException(e);
         }
-
-        final SerializedProtocolMessage serializedProtocolMessage = new SerializedProtocolMessage(messageId, protocolOutputStream);
-        channelHandlerContext.writeAndFlush(serializedProtocolMessage);
     }
 
     public void onClose() {
@@ -56,6 +50,6 @@ public abstract class Session {
     }
 
     public boolean isActive() {
-        return channelHandlerContext != null;
+        return channelHandlerContext != null && !channelHandlerContext.isRemoved();
     }
 }
