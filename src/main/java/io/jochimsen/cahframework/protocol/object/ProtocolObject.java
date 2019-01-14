@@ -11,15 +11,23 @@ import java.lang.reflect.InvocationTargetException;
 
 public abstract class ProtocolObject {
     /**
-     * Creates an instance of a protocol object subtype. Each concrete protocol object must have a default constructor to provide this functionality.
+     * Creates an instance of a concrete protocol object subtype and inflates it with data from the specified stream.
+     * For the purpose of instantiation of a protocol object via reflection, each concrete protocol object MUST have a default constructor.
      *
      * @param clazz Class of the protocol object to be created
+     * @param protocolInputStream The stream used for deserialization
      * @return The instantiated protocol object
      * @throws ProtocolObjectInstantiationException Will be thrown if the protocol object could not be created
      */
-    public static <T extends ProtocolObject> T createProtocolObject(final Class<T> clazz) {
+    public static <T extends ProtocolObject> T fromProtocolInputStream(final Class<T> clazz, final ProtocolInputStream protocolInputStream) {
         try {
-            return clazz.getDeclaredConstructor().newInstance();
+            final T protocolObject = clazz.getDeclaredConstructor().newInstance();
+
+            if(protocolInputStream != null) {
+                protocolObject.deserialize(protocolInputStream);
+            }
+
+            return protocolObject;
         } catch (final InstantiationException e) {
             throw new ProtocolObjectInstantiationException("Cannot instantiate an abstract class", e);
         } catch (final IllegalAccessException e) {
@@ -29,24 +37,6 @@ public abstract class ProtocolObject {
         } catch (final InvocationTargetException e) {
             throw new ProtocolObjectInstantiationException("Constructor has thrown an exception", e);
         }
-    }
-
-    /**
-     * Creates an instance of a protocol object accordingly to {@link ProtocolObject#createProtocolObject(Class)}
-     * and uses the provided {@link ProtocolInputStream} for deserialization.
-     *
-     * @param clazz Class of the protocol object to be created
-     * @param protocolInputStream Stream to be used for deserialization
-     * @return The instantiated protocol object
-     */
-    public static <T extends ProtocolObject> T fromProtocolInputStream(final Class<T> clazz, final ProtocolInputStream protocolInputStream) {
-        final T protocolObject = createProtocolObject(clazz);
-
-        if(protocolInputStream != null) {
-            protocolObject.deserialize(protocolInputStream);
-        }
-
-        return protocolObject;
     }
 
     protected abstract DecoderBase<? extends ProtocolObject> getDecoder();
