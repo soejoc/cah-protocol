@@ -8,12 +8,11 @@ import io.jochimsen.cahframework.util.ProtocolInputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.List;
 
-public class SerializedProtocolMessageDecoder extends ReplayingDecoder<Pair<Integer, ProtocolInputStream>> {
+public class SerializedProtocolMessageDecoder extends ReplayingDecoder<RawProtocolMessageInput> {
     @Override
     protected void decode(final ChannelHandlerContext ctx, final ByteBuf in, final List<Object> out) {
         final int version = in.readInt();
@@ -29,7 +28,7 @@ public class SerializedProtocolMessageDecoder extends ReplayingDecoder<Pair<Inte
 
         try {
             final ProtocolInputStream protocolInputStream = new ProtocolInputStream(message);
-            out.add(new Pair<>(messageId, protocolInputStream));
+            out.add(new RawProtocolMessageInput(messageId, protocolInputStream));
         } catch (final IOException e) {
             throw new ProtocolMessageDeserializationException(e);
         }

@@ -8,8 +8,21 @@ import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
  * It'players defined to be compatible across all io.jochimsen.cahframework.protocol versions.
  */
 public class ErrorMessage extends ProtocolMessage {
-    public int errorCode;
-    public String message;
+    private final int errorCode;
+    private final String message;
+
+    public ErrorMessage(final int errorCode, final String message) {
+        this.errorCode = errorCode;
+        this.message = message;
+    }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 
     @Override
     public int getMessageId() {

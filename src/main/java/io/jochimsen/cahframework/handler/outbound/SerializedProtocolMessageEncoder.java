@@ -7,15 +7,15 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import javafx.util.Pair;
 
-public class SerializedProtocolMessageEncoder extends MessageToByteEncoder<Pair<Integer, ProtocolOutputStream>> {
+public class SerializedProtocolMessageEncoder extends MessageToByteEncoder<RawProtocolMessageOutput> {
     @Override
-    protected void encode(final ChannelHandlerContext ctx, final Pair<Integer, ProtocolOutputStream> msg, final ByteBuf out) {
+    protected void encode(final ChannelHandlerContext ctx, final RawProtocolMessageOutput msg, final ByteBuf out) {
         out.writeInt(Version.PROTOCOL_VERSION);
 
-        final int messageId = msg.getKey();
+        final int messageId = msg.getMessageId();
         out.writeInt(messageId);
 
-        final ProtocolOutputStream protocolStream = msg.getValue();
+        final ProtocolOutputStream protocolStream = msg.getProtocolOutputStream();
         final byte[] buffer = protocolStream.getBuffer();
         final int messageLength = buffer.length;
 

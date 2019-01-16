@@ -8,8 +8,21 @@ import java.util.List;
 import java.util.UUID;
 
 public class StartGameResponse extends ProtocolMessage {
-    public List<PlayerProtocolModel> players;
-    public UUID sessionId;
+    private final List<PlayerProtocolModel> players;
+    private final UUID sessionId;
+
+    public StartGameResponse(final List<PlayerProtocolModel> players, final UUID sessionId) {
+        this.players = players;
+        this.sessionId = sessionId;
+    }
+
+    public List<PlayerProtocolModel> getPlayers() {
+        return players;
+    }
+
+    public UUID getSessionId() {
+        return sessionId;
+    }
 
     @Override
     public int getMessageId() {

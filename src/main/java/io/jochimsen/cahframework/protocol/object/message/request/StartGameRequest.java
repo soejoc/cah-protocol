@@ -4,7 +4,15 @@ import io.jochimsen.cahframework.protocol.object.message.MessageCode;
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
 
 public class StartGameRequest extends ProtocolMessage {
-    public String nickName;
+    private final String nickName;
+
+    public StartGameRequest(final String nickName) {
+        this.nickName = nickName;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
 
     @Override
     public int getMessageId() {

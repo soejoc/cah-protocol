@@ -2,10 +2,10 @@ package io.jochimsen.cahframework.session;
 
 import io.jochimsen.cahframework.exception.internal.ProtocolMessageSerializationException;
 import io.jochimsen.cahframework.exception.session.InactiveChannelContextException;
+import io.jochimsen.cahframework.handler.outbound.RawProtocolMessageOutput;
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
 import io.jochimsen.cahframework.util.ProtocolOutputStream;
 import io.netty.channel.ChannelHandlerContext;
-import javafx.util.Pair;
 
 import java.io.IOException;
 
@@ -39,7 +39,7 @@ public abstract class Session {
             protocolOutputStream.write(protocolMessage);
             protocolOutputStream.flush();
 
-            channelHandlerContext.writeAndFlush(new Pair<>(messageId, protocolOutputStream));
+            channelHandlerContext.writeAndFlush(new RawProtocolMessageOutput(messageId, protocolOutputStream));
         } catch (final IOException e) {
             throw new ProtocolMessageSerializationException(e);
         }

@@ -50,7 +50,8 @@ public class ProtocolInputStream {
         return objectInputStream.readUTF();
     }
 
-    public <T extends Serializable> T readObject(final Class<T> clazz) throws IOException, ClassNotFoundException{
-        return clazz.cast(objectInputStream.readObject());
+    @SuppressWarnings("unchecked")
+    public <T> T readObject() throws IOException, ClassNotFoundException {
+        return (T)objectInputStream.readObject();
     }
 }

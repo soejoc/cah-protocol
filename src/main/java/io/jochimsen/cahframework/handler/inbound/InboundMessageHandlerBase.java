@@ -9,7 +9,6 @@ import io.jochimsen.cahframework.session.Session;
 import io.jochimsen.cahframework.util.ProtocolInputStream;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import javafx.util.Pair;
 
 import java.io.IOException;
 
@@ -17,15 +16,15 @@ public abstract class InboundMessageHandlerBase extends ChannelInboundHandlerAda
 
     @Override
     public final void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
-        final Pair<Integer, ProtocolInputStream> messagePair = (Pair<Integer, ProtocolInputStream>) msg;
+        final RawProtocolMessageInput rawProtocolMessageInput = (RawProtocolMessageInput) msg;
 
-        final int messageId = messagePair.getKey();
-        final ProtocolInputStream protocolInputStream = messagePair.getValue();
+        final int messageId = rawProtocolMessageInput.getMessageId();
+        final ProtocolInputStream protocolInputStream = rawProtocolMessageInput.getProtocolInputStream();
         final Session session = getSession(ctx);
 
         try {
             if (messageId == MessageCode.ERROR) {
-                final ErrorMessage errorMessage = protocolInputStream.readObject(ErrorMessage.class);
+                final ErrorMessage errorMessage = protocolInputStream.readObject();
                 onErrorReceived(errorMessage, session);
             } else {
                 handleMessage(messageId, protocolInputStream, session);
@@ -51,10 +50,7 @@ public abstract class InboundMessageHandlerBase extends ChannelInboundHandlerAda
     }
 
     protected void onErrorMessageException(final Session session, final ErrorMessageException cause) {
-        final ErrorMessage errorMessage = new ErrorMessage();
-        errorMessage.errorCode = cause.getErrorCode();
-        errorMessage.message = cause.getMessage();
-
+        final ErrorMessage errorMessage = new ErrorMessage(cause.getErrorCode(), cause.getMessage());
         session.say(errorMessage);
     }
 

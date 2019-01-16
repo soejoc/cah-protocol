@@ -6,7 +6,15 @@ import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
 import java.util.UUID;
 
 public class RestartGameRequest extends ProtocolMessage {
-    public UUID sessionKey;
+    private final UUID sessionKey;
+
+    public RestartGameRequest(final UUID sessionKey) {
+        this.sessionKey = sessionKey;
+    }
+
+    public UUID getSessionKey() {
+        return sessionKey;
+    }
 
     @Override
     public int getMessageId() {

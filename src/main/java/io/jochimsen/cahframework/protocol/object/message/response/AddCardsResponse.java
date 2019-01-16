@@ -8,8 +8,21 @@ import io.jochimsen.cahframework.protocol.object.model.WhiteCardProtocolModel;
 import java.util.List;
 
 public class AddCardsResponse extends ProtocolMessage {
-    public BlackCardProtocolModel blackCardProtocolModel;
-    public List<WhiteCardProtocolModel> whiteCardProtocolModels;
+    private final BlackCardProtocolModel blackCardProtocolModel;
+    private final List<WhiteCardProtocolModel> whiteCardProtocolModels;
+
+    public AddCardsResponse(final BlackCardProtocolModel blackCardProtocolModel, final List<WhiteCardProtocolModel> whiteCardProtocolModels) {
+        this.blackCardProtocolModel = blackCardProtocolModel;
+        this.whiteCardProtocolModels = whiteCardProtocolModels;
+    }
+
+    public BlackCardProtocolModel getBlackCardProtocolModel() {
+        return blackCardProtocolModel;
+    }
+
+    public List<WhiteCardProtocolModel> getWhiteCardProtocolModels() {
+        return whiteCardProtocolModels;
+    }
 
     @Override
     public int getMessageId() {

@@ -4,6 +4,19 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class PlayerProtocolModel implements Serializable {
-    public UUID playerId;
-    public String nickName;
+    private final UUID playerId;
+    private final String nickName;
+
+    public PlayerProtocolModel(final UUID playerId, final String nickName) {
+        this.playerId = playerId;
+        this.nickName = nickName;
+    }
+
+    public UUID getPlayerId() {
+        return playerId;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
 }
