@@ -1,7 +1,7 @@
 package io.jochimsen.cahframework.protocol.object.message;
 
-import io.jochimsen.cahframework.protocol.object.ProtocolObject;
+import java.io.Serializable;
 
-public abstract class ProtocolMessage extends ProtocolObject {
+public abstract class ProtocolMessage implements Serializable {
     public abstract int getMessageId();
 }

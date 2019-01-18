@@ -1,8 +1,5 @@
 package io.jochimsen.cahframework.protocol.object.message.error;
 
-import io.jochimsen.cahframework.protocol.object.DecoderBase;
-import io.jochimsen.cahframework.protocol.object.EncoderBase;
-import io.jochimsen.cahframework.protocol.object.ProtocolObject;
 import io.jochimsen.cahframework.protocol.object.message.MessageCode;
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
 
@@ -11,17 +8,20 @@ import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
  * It'players defined to be compatible across all io.jochimsen.cahframework.protocol versions.
  */
 public class ErrorMessage extends ProtocolMessage {
-    public int errorCode;
-    public String message;
+    private final int errorCode;
+    private final String message;
 
-    @Override
-    protected DecoderBase<? extends ProtocolObject> getDecoder() {
-        return new ErrorMessageDecoder(this);
+    public ErrorMessage(final int errorCode, final String message) {
+        this.errorCode = errorCode;
+        this.message = message;
     }
 
-    @Override
-    protected EncoderBase<? extends ProtocolObject> getEncoder() {
-        return new ErrorMessageEncoder(this);
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     @Override

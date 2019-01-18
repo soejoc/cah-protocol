@@ -1,215 +1,57 @@
 package io.jochimsen.cahframework.util;
 
-import io.jochimsen.cahframework.exception.BufferTooShortException;
-import io.jochimsen.cahframework.exception.ProtocolObjectInstantiationException;
-import io.jochimsen.cahframework.protocol.Charset;
-import io.jochimsen.cahframework.protocol.object.ProtocolObject;
+import java.io.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+public class ProtocolInputStream {
+    private final ObjectInputStream objectInputStream;
 
-public class ProtocolInputStream implements ProtocolStream {
-    // Only used as a wrapper to write to the actual output stream
-    private final DataInputStream dataInputStream;
-    private final byte[] buffer;
-
-    public ProtocolInputStream(final byte[] buf) {
-        buffer = buf;
+    public ProtocolInputStream(final byte[] buf) throws IOException {
         final ByteArrayInputStream byteStream = new ByteArrayInputStream(buf);
-        dataInputStream = new DataInputStream(byteStream);
+        objectInputStream = new ObjectInputStream(byteStream);
     }
 
-    // WTF, I want C++ back; no fucking call-by-reference :(
     public boolean readBoolean() throws IOException {
-        return dataInputStream.readBoolean();
+        return objectInputStream.readBoolean();
     }
 
     public char readCharacter() throws IOException {
-        return dataInputStream.readChar();
+        return objectInputStream.readChar();
     }
 
     public byte readByte() throws IOException {
-        return dataInputStream.readByte();
+        return objectInputStream.readByte();
     }
 
     public int readBytes(final byte[] b, final int off, final int len) throws IOException {
-        return dataInputStream.read(b, off, len);
+        return objectInputStream.read(b, off, len);
     }
 
     public short readShort() throws IOException {
-        return dataInputStream.readShort();
+        return objectInputStream.readShort();
     }
 
     public int readInt() throws IOException {
-        return dataInputStream.readInt();
+        return objectInputStream.readInt();
     }
 
     public long readLong() throws IOException {
-       return dataInputStream.readLong();
+       return objectInputStream.readLong();
     }
 
     public float readFloat() throws IOException {
-        return dataInputStream.readFloat();
+        return objectInputStream.readFloat();
     }
 
     public double readDouble() throws IOException {
-        return dataInputStream.readDouble();
+        return objectInputStream.readDouble();
     }
 
     public String readString() throws IOException {
-        final int length = readInt();
-        final byte[] stringAsBinary = new byte[length];
-
-        if(readBytes(stringAsBinary, 0, length) != length) {
-            throw new BufferTooShortException("Could not read the string from the input stream");
-        }
-
-        return new String(stringAsBinary, Charset.defaultCharset);
+        return objectInputStream.readUTF();
     }
 
-    public UUID readUUID() throws IOException {
-        final long mostSignificantBits = readLong();
-        final long leastSignificantBits = readLong();
-
-        return new UUID(mostSignificantBits, leastSignificantBits);
-    }
-
-    public <T extends ProtocolObject> T readProtocolObject(final Class<T> clazz) {
-        return ProtocolObject.fromProtocolInputStream(clazz, this);
-    }
-
-    /**
-     * <p>
-     *     This method reads a list of elements from the stream.
-     * </p>
-     * <p>
-     *     The following element types are supported:
-     *     <ul>
-     *         <li>Boolean</li>
-     *         <li>Character</li>
-     *         <li>Byte</li>
-     *         <li>Short</li>
-     *         <li>Integer</li>
-     *         <li>Long</li>
-     *         <li>Float</li>
-     *         <li>Double</li>
-     *         <li>String</li>
-     *         <li>UUID</li>
-     *         <li>? extends ProtocolObject</li>
-     *     </ul>
-     * </p>
-     *
-     * @throws IllegalArgumentException Will be thrown if an unsupported element type was specified
-     */
     @SuppressWarnings("unchecked")
-    public <T> List<T> readList(final Class<T> elementType) throws IOException {
-        final int size = readInt();
-        final List<T> list;
-
-        if(Boolean.TYPE == elementType) {
-            final List<Boolean> booleanList = new ArrayList<>();
-
-            for(int i = 0; i < size; ++i) {
-                booleanList.add(readBoolean());
-            }
-
-            list = (List<T>)booleanList;
-        } else if(Character.TYPE == elementType) {
-            final List<Character> characterList = new ArrayList<>();
-
-            for(int i = 0; i < size; ++i) {
-                characterList.add(readCharacter());
-            }
-
-            list = (List<T>)characterList;
-        } else if(Byte.TYPE == elementType) {
-            final List<Byte> byteList = new ArrayList<>();
-
-            for(int i = 0; i < size; ++i) {
-                byteList.add(readByte());
-            }
-
-            list = (List<T>)byteList;
-        } else if(Short.TYPE == elementType) {
-            final List<Short> shortList = new ArrayList<>();
-
-            for(int i = 0; i < size; ++i) {
-                shortList.add(readShort());
-            }
-
-            list = (List<T>)shortList;
-        } else if(Integer.TYPE == elementType) {
-            final List<Integer> integerList = new ArrayList<>();
-
-            for(int i = 0; i < size; ++i) {
-                integerList.add(readInt());
-            }
-
-            list = (List<T>)integerList;
-        } else if(Long.TYPE == elementType) {
-            final List<Long> longList = new ArrayList<>();
-
-            for(int i = 0; i < size; ++i) {
-                longList.add(readLong());
-            }
-
-            list = (List<T>)longList;
-        } else if(Float.TYPE == elementType) {
-            final List<Float> floatList = new ArrayList<>();
-
-            for(int i = 0; i < size; ++i) {
-                floatList.add(readFloat());
-            }
-
-            list = (List<T>)floatList;
-        } else if(Double.TYPE == elementType) {
-            final List<Double> doubleList = new ArrayList<>();
-
-            for(int i = 0; i < size; ++i) {
-                doubleList.add(readDouble());
-            }
-
-            list = (List<T>)doubleList;
-        } else if(String.class == elementType) {
-            final List<String> stringList = new ArrayList<>();
-
-            for(int i = 0; i < size; ++i) {
-                stringList.add(readString());
-            }
-
-            list = (List<T>)stringList;
-        } else if(UUID.class == elementType) {
-            final List<UUID> uuidList = new ArrayList<>();
-
-            for(int i = 0; i < size; ++i) {
-                uuidList.add(readUUID());
-            }
-
-            list = (List<T>)uuidList;
-        } else if(ProtocolObject.class.isAssignableFrom(elementType)) {
-            final List<ProtocolObject> protocolObjectList = new ArrayList<>();
-
-            final Class<? extends ProtocolObject> protocolObjectClass = (Class<? extends ProtocolObject>)elementType;
-
-            for(int i = 0; i < size; ++i) {
-                protocolObjectList.add(readProtocolObject(protocolObjectClass));
-            }
-
-            list = (List<T>)protocolObjectList;
-        } else {
-            throw new IllegalArgumentException("The specified element type is not supported");
-        }
-
-        return list;
-    }
-
-    @Override
-    public byte[] getBuffer() {
-        return buffer;
+    public <T> T readObject() throws IOException, ClassNotFoundException {
+        return (T)objectInputStream.readObject();
     }
 }
