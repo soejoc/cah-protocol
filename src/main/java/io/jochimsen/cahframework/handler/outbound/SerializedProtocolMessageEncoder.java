@@ -5,7 +5,6 @@ import io.jochimsen.cahframework.util.ProtocolOutputStream;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-import javafx.util.Pair;
 
 public class SerializedProtocolMessageEncoder extends MessageToByteEncoder<RawProtocolMessageOutput> {
     @Override
