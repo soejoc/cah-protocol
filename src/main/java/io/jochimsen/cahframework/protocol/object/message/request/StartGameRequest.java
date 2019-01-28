@@ -1,25 +1,17 @@
 package io.jochimsen.cahframework.protocol.object.message.request;
 
-import io.jochimsen.cahframework.codec.decoder.DecoderBase;
-import io.jochimsen.cahframework.codec.decoder.StartGameRequestDecoder;
-import io.jochimsen.cahframework.codec.encoder.EncoderBase;
-import io.jochimsen.cahframework.codec.encoder.StartGameRequestEncoder;
-import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
 import io.jochimsen.cahframework.protocol.object.message.MessageCode;
-import io.jochimsen.cahframework.protocol.object.ProtocolObject;
-import io.jochimsen.cahframework.util.ProtocolInputStream;
+import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
 
 public class StartGameRequest extends ProtocolMessage {
-    public String nickName;
+    private final String nickName;
 
-    @Override
-    protected DecoderBase<? extends ProtocolObject> getDecoder(final ProtocolInputStream protocolObjectStream) {
-        return new StartGameRequestDecoder(protocolObjectStream, this);
+    public StartGameRequest(final String nickName) {
+        this.nickName = nickName;
     }
 
-    @Override
-    protected EncoderBase<? extends ProtocolObject> getEncoder() {
-        return new StartGameRequestEncoder(this);
+    public String getNickName() {
+        return nickName;
     }
 
     @Override
