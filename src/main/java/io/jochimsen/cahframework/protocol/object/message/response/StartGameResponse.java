@@ -3,7 +3,6 @@ package io.jochimsen.cahframework.protocol.object.message.response;
 import io.jochimsen.cahframework.protocol.object.message.MessageCode;
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
 import io.jochimsen.cahframework.protocol.object.model.PlayerProtocolModel;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 

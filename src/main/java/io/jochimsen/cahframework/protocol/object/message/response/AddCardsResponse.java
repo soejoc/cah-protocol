@@ -4,7 +4,6 @@ import io.jochimsen.cahframework.protocol.object.message.MessageCode;
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
 import io.jochimsen.cahframework.protocol.object.model.BlackCardProtocolModel;
 import io.jochimsen.cahframework.protocol.object.model.WhiteCardProtocolModel;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 

@@ -2,11 +2,7 @@ package io.jochimsen.cahframework.protocol.object.message.error;
 
 import io.jochimsen.cahframework.protocol.object.message.MessageCode;
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.NonFinal;
 
