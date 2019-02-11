@@ -6,14 +6,12 @@ import io.jochimsen.cahframework.handler.outbound.SerializedProtocolMessageEncod
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public class ProtocolMessageChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     private final InboundMessageHandlerBase inboundMessageHandlerBase;
-
-    public ProtocolMessageChannelInitializer(final InboundMessageHandlerBase inboundMessageHandlerBase) {
-        this.inboundMessageHandlerBase = inboundMessageHandlerBase;
-    }
 
     @Override
     public void initChannel(final SocketChannel ch) throws Exception {

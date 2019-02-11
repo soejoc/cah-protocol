@@ -6,23 +6,18 @@ import io.jochimsen.cahframework.handler.outbound.RawProtocolMessageOutput;
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
 import io.jochimsen.cahframework.util.ProtocolOutputStream;
 import io.netty.channel.ChannelHandlerContext;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.IOException;
 
+@AllArgsConstructor
 public abstract class Session {
+
+    @Getter
+    @Setter
     protected ChannelHandlerContext channelHandlerContext;
-
-    public Session(final ChannelHandlerContext channelHandlerContext) {
-        this.channelHandlerContext = channelHandlerContext;
-    }
-
-    public ChannelHandlerContext getChannelHandlerContext() {
-        return channelHandlerContext;
-    }
-
-    public void setChannelHandlerContext(final ChannelHandlerContext channelHandlerContext) {
-        this.channelHandlerContext = channelHandlerContext;
-    }
 
     public void close() {
         channelHandlerContext.close();
