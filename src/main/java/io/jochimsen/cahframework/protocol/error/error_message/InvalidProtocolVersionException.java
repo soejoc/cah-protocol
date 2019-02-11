@@ -1,7 +1,7 @@
 package io.jochimsen.cahframework.protocol.error.error_message;
 
-import io.jochimsen.cahframework.protocol.error.ErrorMessageException;
 import io.jochimsen.cahframework.protocol.error.ErrorCode;
+import io.jochimsen.cahframework.protocol.error.ErrorMessageException;
 
 public class InvalidProtocolVersionException extends ErrorMessageException {
     public InvalidProtocolVersionException(final int version, final int currentVersion) {

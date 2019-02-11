@@ -1,7 +1,7 @@
 package io.jochimsen.cahframework.handler.inbound;
 
-import io.jochimsen.cahframework.protocol.Version;
 import io.jochimsen.cahframework.exception.session.ProtocolMessageDeserializationException;
+import io.jochimsen.cahframework.protocol.Version;
 import io.jochimsen.cahframework.protocol.error.error_message.InvalidProtocolVersionException;
 import io.jochimsen.cahframework.protocol.object.message.MessageCode;
 import io.jochimsen.cahframework.util.ProtocolInputStream;

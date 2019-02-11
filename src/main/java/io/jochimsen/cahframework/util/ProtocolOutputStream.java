@@ -1,6 +1,9 @@
 package io.jochimsen.cahframework.util;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 public class ProtocolOutputStream {
     private final ByteArrayOutputStream buffer;

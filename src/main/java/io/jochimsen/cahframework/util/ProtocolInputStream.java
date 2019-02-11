@@ -1,6 +1,8 @@
 package io.jochimsen.cahframework.util;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 public class ProtocolInputStream {
     private final ObjectInputStream objectInputStream;
