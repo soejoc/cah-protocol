@@ -1,6 +1,6 @@
 package io.jochimsen.cahframework.initializer;
 
-import io.jochimsen.cahframework.handler.inbound.InboundMessageHandlerBase;
+import io.jochimsen.cahframework.handler.inbound.InboundHandlerBase;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.ssl.SslContext;
@@ -10,14 +10,14 @@ public class SslProtocolMessageChannelInitializer extends ProtocolMessageChannel
     private String host;
     private int port;
 
-    public SslProtocolMessageChannelInitializer(final SslContext sslCtx, final InboundMessageHandlerBase inboundMessageHandlerBase) {
-        super(inboundMessageHandlerBase);
+    public SslProtocolMessageChannelInitializer(final SslContext sslCtx, final InboundHandlerBase inboundHandlerBase) {
+        super(inboundHandlerBase);
 
         this.sslCtx = sslCtx;
     }
 
-    public SslProtocolMessageChannelInitializer(final SslContext sslCtx, final InboundMessageHandlerBase inboundMessageHandlerBase, final String host, final int port) {
-        super(inboundMessageHandlerBase);
+    public SslProtocolMessageChannelInitializer(final SslContext sslCtx, final InboundHandlerBase inboundHandlerBase, final String host, final int port) {
+        super(inboundHandlerBase);
 
         this.sslCtx = sslCtx;
         this.host = host;

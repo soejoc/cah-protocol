@@ -12,7 +12,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.io.IOException;
 
-public abstract class InboundMessageHandlerBase extends ChannelInboundHandlerAdapter {
+public abstract class InboundHandlerBase extends ChannelInboundHandlerAdapter {
 
     @Override
     public final void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
