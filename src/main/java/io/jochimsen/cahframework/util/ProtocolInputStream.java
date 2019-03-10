@@ -56,4 +56,9 @@ public class ProtocolInputStream {
     public <T> T readObject() throws IOException, ClassNotFoundException {
         return (T)objectInputStream.readObject();
     }
+
+    @SuppressWarnings("unchecked")
+    public <T> T readObject(final Class<T> clazz) throws IOException, ClassNotFoundException {
+        return clazz.cast(objectInputStream.readObject());
+    }
 }
