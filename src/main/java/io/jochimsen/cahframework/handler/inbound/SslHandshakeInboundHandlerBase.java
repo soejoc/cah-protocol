@@ -4,7 +4,7 @@ import io.jochimsen.cahframework.session.Session;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.ssl.SslHandler;
 
-public abstract class SslHandshakeInboundMessageHandlerBase extends InboundMessageHandlerBase {
+public abstract class SslHandshakeInboundHandlerBase extends InboundHandlerBase {
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
         ctx.pipeline().get(SslHandler.class).handshakeFuture().addListener(future -> onSuccessfulHandshake(getSession(ctx)));
