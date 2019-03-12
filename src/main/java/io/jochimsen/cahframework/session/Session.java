@@ -13,7 +13,7 @@ import lombok.Setter;
 import java.io.IOException;
 
 @AllArgsConstructor
-public abstract class Session {
+public abstract class Session<M extends ProtocolMessage> {
 
     @Getter
     @Setter
@@ -23,7 +23,7 @@ public abstract class Session {
         channelHandlerContext.close();
     }
 
-    public void say(final ProtocolMessage protocolMessage) {
+    public void say(final M protocolMessage) {
         if(!isActive()) {
             throw new InactiveChannelContextException();
         }
