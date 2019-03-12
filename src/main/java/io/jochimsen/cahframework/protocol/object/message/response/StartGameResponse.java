@@ -2,6 +2,7 @@ package io.jochimsen.cahframework.protocol.object.message.response;
 
 import io.jochimsen.cahframework.protocol.object.message.MessageCode;
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
+import io.jochimsen.cahframework.protocol.object.message.ResponseMessage;
 import io.jochimsen.cahframework.protocol.object.model.PlayerProtocolModel;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -11,7 +12,7 @@ import java.util.UUID;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class StartGameResponse extends ProtocolMessage {
+public class StartGameResponse extends ResponseMessage {
     private final List<PlayerProtocolModel> players;
     private final UUID sessionId;
 
