@@ -1,8 +1,8 @@
 package io.jochimsen.cahframework.handler.message;
 
 import io.jochimsen.cahframework.protocol.object.message.ProtocolMessage;
-import lombok.RequiredArgsConstructor;
+import io.jochimsen.cahframework.session.Session;
 
-public abstract class MessageHandler<T extends ProtocolMessage> {
-    public abstract void handle(final T protocolMessage);
+public interface MessageHandler<M extends ProtocolMessage, S extends Session> {
+    void handleMessage(final M protocolMessage, final S session);
 }
