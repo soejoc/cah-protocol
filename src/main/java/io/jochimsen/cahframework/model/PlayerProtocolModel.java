@@ -1,10 +1,9 @@
-package io.jochimsen.cahframework.protocol.object.model;
+package io.jochimsen.cahframework.model;
 
-import io.jochimsen.cahframework.protocol.ProtocolObject;
+import io.jochimsen.collo.protocol.ProtocolObject;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 @Value
