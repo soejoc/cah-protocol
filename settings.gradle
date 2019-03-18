@@ -1,2 +1,4 @@
-rootProject.name = 'cah-framework'
+rootProject.name = 'cah-protocol'
 
+include ':collo'
+project(':collo').projectDir = new File('../../collo')

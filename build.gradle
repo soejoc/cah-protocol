@@ -16,5 +16,5 @@ dependencies {
     compileOnly "org.projectlombok:lombok:$lombok_version"
     annotationProcessor "org.projectlombok:lombok:$lombok_version"
 
-    api 'io.netty:netty-all:4.1.31.Final'
+    api project(path: ":collo")
 }
