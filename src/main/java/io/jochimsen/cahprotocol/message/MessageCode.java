@@ -1,4 +1,4 @@
-package io.jochimsen.cahframework.message;
+package io.jochimsen.cahprotocol.message;
 
 public final class MessageCode {
     private MessageCode() { }

@@ -1,6 +1,6 @@
-package io.jochimsen.cahframework.message.request;
+package io.jochimsen.cahprotocol.message.request;
 
-import io.jochimsen.cahframework.message.MessageCode;
+import io.jochimsen.cahprotocol.message.MessageCode;
 import io.jochimsen.collo.protocol.RequestMessage;
 import lombok.EqualsAndHashCode;
 import lombok.Value;

@@ -1,8 +1,8 @@
-package io.jochimsen.cahframework.message.response;
+package io.jochimsen.cahprotocol.message.response;
 
-import io.jochimsen.cahframework.message.MessageCode;
-import io.jochimsen.cahframework.model.BlackCardProtocolModel;
-import io.jochimsen.cahframework.model.WhiteCardProtocolModel;
+import io.jochimsen.cahprotocol.message.MessageCode;
+import io.jochimsen.cahprotocol.model.BlackCardProtocolModel;
+import io.jochimsen.cahprotocol.model.WhiteCardProtocolModel;
 import io.jochimsen.collo.protocol.ResponseMessage;
 import lombok.EqualsAndHashCode;
 import lombok.Value;

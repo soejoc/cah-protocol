@@ -1,4 +1,4 @@
-package io.jochimsen.cahframework.model;
+package io.jochimsen.cahprotocol.model;
 
 import io.jochimsen.collo.protocol.ProtocolObject;
 import lombok.EqualsAndHashCode;
